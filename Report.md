@@ -16,7 +16,7 @@ For this challenge I used VMWare Workstation to run my Kali Linux attacker box a
 1) Raspberry Pi Model B+ (Running IoTGoat firmware)
 2) Kali Linux Virtual Machine running with VMWare Workstation on a Windows 10 host
 3) GL-MT1300 Beryl Router for connecting the above devices in an isolated network (Running OpenWrt)
-![](setup.jpg)
+![](Attachments/setup.jpg)
 
 Machine Details:
 |IP|Hostname|Operating System|
@@ -46,22 +46,22 @@ I began my test with information gathering and tried to locate as much informati
 
 In my OSINT research, the official OWASP GitHub Wiki page for IoTGoat (https://github.com/OWASP/IoTGoat/wiki) contained the most valuable information for my test. Since this is designed to have various challenges, the Wiki has information about how to start, but it it important to remember a real-world system could possibly also have valuable information out on the Internet. 
 
-![](challenges_page.png)
+![](Attachments/challenges_page.png)
 
 ## Static Analysis
 
 Because we know that IoTGoat is a firmware that can be flashed, we can download the latest precompiled firmware release from https://github.com/OWASP/IoTGoat/releases. I will be downloading "[IoTGoat-raspberry-pi2.img](https://github.com/OWASP/IoTGoat/releases/download/v1.0/IoTGoat-raspberry-pi2.img)".
 
-![](releases.png)
+![](Attachments/releases.png)
 
 With prior experience in static analysis and also participating in CTF events, I believe the tool 'binwalk' would be worthwhile to try:
 
-![](binwalk_output.png)
+![](Attachments/binwalk_output.png)
 We can see that binwalk was able to successfully extract the filesystem from the .img file! It extracted everything into a directory "\_IoTGoat-raspberryp-pi2.img.extracted/":
-![](extracted_filesystem.png)
+![](Attachments/extracted_filesystem.png)
 We can now look through the filesystem and search for anything of value. Some of the most valuable places to look in a Linux file system are `/etc/passwd` and `/etc/shadow`. Let's try to read the contents of these files:
 
-![](passwd_shadow.png)
+![](Attachments/passwd_shadow.png)
 We now have some valuable information from this static analysis! We know that there are two users with accomanying password that are created when the firmware is flashed (iotgoatuser and root), and we have the MD5 hashes of these accounts. If time was not an issue and I had access to powerful GPUs for password cracking, running something like hashcat or johntheripper would be more feasible, but for the purposes of this particular challenge I will refrain from password cracking for now and instead take my win of knowing that there is a user `root` and a user `iotgoatuser`:
 
 ##### Users
@@ -92,25 +92,25 @@ Typically when doing challenges and practicing my penetration testing (HackTheBo
 - -p-: Scann all 65,535 TCP ports
 
 **Nmap Scan Results:**
-![](nmap_results.png)
+![](Attachments/nmap_results.png)
 Server IP Address | Ports Open
 ------------------|----------------------------------------
 192.168.117.131       | **TCP**: 22, 53, 80, 443, 5000, 5515
 
 The nmap scan reveals the above ports as open, many of which are standard services that may exist. However, the interesting one is port 5515, where nmap is unable to detect what service is running on that port. In our full nmap output there is an interesting section with respect to this port:
 
-![](5515.png)
+![](Attachments/5515.png)
 This looks very interesting and I will definitely explore this further in the next phase - manual testing!
 
 ## Manual Testing
 
 ### Port 5515: Unknown Service
 As mentioned above, nmap detected an 'unknown' service running on port 5515 and we saw indication of a possible backdoor:
-![](5515.png)
+![](Attachments/5515.png)
 
 Because this service is unknown and we know nothing about what could be here, it's possible to connect to it with `netcat` and see if there is some banner or interaction we can get:
 
-![](backdoor.png)
+![](Attachments/backdoor.png)
 Upon connecting with `netcat` we are greeting with a "Successfully Connected to IoTGoat's Backdoor" message. We still don't know yet what it is that we connected to, but something to try is running shell commands, which we find works. I ran `id` which will display the user and group identity of the connected user who issued the command (in this case, we find we are root!).
 
 **Vulnerability Explanation:**
@@ -125,21 +125,21 @@ Very High
 ### Port 22: SSH
 In our static analysis we were able to identify two users (root, iotgoatuser). These users may be able to SSH into the device, and if we had enough time to crack their password we might be able to use those password to get SSH access. What we can try though is to see if any of these users use insecure or leaked password that are publically known. In my search, I decided to try to ask ChatGPT if it could point me in the right direction:
 
-![](cgpt.png)
+![](Attachments/cgpt.png)
 The Mirari Botnet password are actually included in SecLists, and I have SecLists installed on my Kali machine. I'll try to use Hydra to brute force these password for both root and iotgoatuser. mirai-botnet.txt is not in a usable format for hydra, however. I want to take mirai-botnext.txt and take only the second column of it and write it to a new file 'mirai-botnet-passwords.txt'. I can use the 'cut' tool to do this:
 
-![](mirai_cut.png)
+![](Attachments/mirai_cut.png)
 
 Now that I have the password in a usable format I can run hydra. Running these password against the root user yielded no matches, but the user iotgoatuser did:
 
-![](hydra.png)
+![](Attachments/hydra.png)
 ## Passwords Found
 |Username|Password|Service|Notes|
 |---|---|---|---|
 |iotgoatuser|7ujMko0vizxv|ssh|Hydra with mirai botnet creds|
 
 Now we can proceed to try to login ourselves with these credentials and find that they do work:
-![](iotgoatuser_ssh.png)
+![](Attachments/iotgoatuser_ssh.png)
 **Vulnerability Explanation:**
 A significant vulnerability was discovered that allows unauthorized access to the SSH service using the known username "iotgoatuser" and passwords commonly associated with the Mirai botnet. 
 
@@ -162,7 +162,7 @@ With user-level access (iotgoatuser), I began enumerating the live filesystem an
 
 In my manual search, I identified some interesting database (.db) files:
 
-![](find_db.png)
+![](Attachments/find_db.png)
 
 -   `find`: This is the command used to search for files and directories.
 -   `/`: Specifies the starting point for the search, in this case, the root directory.
@@ -172,17 +172,17 @@ In my manual search, I identified some interesting database (.db) files:
 
 This "sensordata.db" file might contain some interesting information. I will use scp to copy this file back to my Kali attacker box:
 
-![](scp_fail.png)
+![](Attachments/scp_fail.png)
 
 I got the above error and had to do some research online on how to resolve it. Fortunately I found a resolution with an explanation:
 
-![](scp_resolve.png)
+![](sAttachments/cp_resolve.png)
 
 After adding the `-O` flag, I was able to successfuly copy the file to my machine:
-![](scp_working.png)
+![](Attachments/scp_working.png)
 
 Now with this file on my local attacker machine, I can run sqlite3 on this file and dump its contents:
-![](db_dump.png)
+![](Attachments/db_dump.png)
 We have discovered some sensitive information including names, emails, and birthdates:
 
 |Name|Email|Where Found?|Birthdate|
