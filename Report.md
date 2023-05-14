@@ -1,4 +1,4 @@
-*Note: Unfortunately I was unable to complete this challenge in its entirety. With a full-time job, I was only able to dedicate a few hours in my evenings in the past week and some time on this Mother's Day weekend to work on this research challenge. I hope this report can still serve to provide insight into my approach and methodology in tackling similar problems. 
+*Note: Unfortunately I was unable to complete this challenge in its entirety. With a full-time job, I was only able to dedicate a few hours in my evenings in the past week and some time on this Mother's Day weekend to work on this research challenge. I hope this report can still serve to provide insight into my approach and methodology in tackling similar problems.*
 
 # IoTGoat Research Challenge Report
 

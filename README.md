@@ -1,6 +1,9 @@
 # IoTGoat-Research-Challenge
 
-This repository contains the documentation and automation scripts for the IoTGoat Research Challenge. The challenge involves performing a penetration test on IoTGoat, an intentionally vulnerable IoT firmware. The goal is to identify vulnerabilities, assess the security posture, and demonstrate possible exploitation scenarios.
+This repository contains the documentation and automation scripts for the IoTGoat Research Challenge. The challenge involves performing a penetration test on IoTGoat, an intentionally vulnerable IoT firmware. The goal is to identify vulnerabilities, assess the security posture, and demonstrate possible exploitation scenarios. 
+
+*Note: Unfortunately I was unable to complete this challenge in its entirety. With a full-time job, I was only able to dedicate a few hours in my evenings in the past week and some time on this Mother's Day weekend to work on this research challenge. I hope this report can still serve to provide insight into my approach and methodology in tackling similar problems.*
+
 
 ## Report
 
@@ -16,7 +19,7 @@ The [scripts](scripts) directory contains various automation scripts developed t
 
 - [extract_shadow.py](scripts/extract_shadow/extract_shadow.py): A script to automate the extraction of a binary file using Binwalk and locate the shadow file within it.
 
-- [iot_goat.rules](iot_goat.rules): A collection of Snort rules to mitigate specific vulnerabilities in the IoTGoat application. It should be noted that these rules have not been tested due to time constraints. If I had more time my approach would be to install Snort on my GL-MT1300 Beryl Router since it is running OpenWrt, and test it live. 
+- [iot_goat.rules](iot_goat.rules): A collection of Snort rules to mitigate specific vulnerabilities in the IoTGoat application. It should be noted that these rules have not been tested due to time constraints. If I had more time, my approach would be to install Snort on my GL-MT1300 Beryl Router since it is running OpenWrt, and test it live. 
 
 Feel free to explore the scripts directory for more details about each script and their usage.
 
