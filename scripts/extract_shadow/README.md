@@ -16,13 +16,7 @@ The Binwalk Shadow Extractor is a Python script that automates the extraction of
    cd binwalk-shadow-extractor
    ```
 
-2. Install the required dependencies:
-
-   ```shell
-   pip install -r requirements.txt
-   ```
-
-3. Ensure that `binwalk` is installed on your system. If not, you can install it using the package manager of your operating system.
+2. Ensure that `binwalk` is installed on your system. If not, you can install it using the package manager of your operating system.
 
 ## Usage
 
