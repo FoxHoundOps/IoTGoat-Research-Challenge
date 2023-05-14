@@ -1,7 +1,3 @@
-Certainly! Here's the modified README.md file with the description of the `iot_goat.rules` added:
-
----
-
 # IoTGoat-Research-Challenge
 
 This repository contains the documentation and automation scripts for the IoTGoat Research Challenge. The challenge involves performing a penetration test on IoTGoat, an intentionally vulnerable IoT firmware. The goal is to identify vulnerabilities, assess the security posture, and demonstrate possible exploitation scenarios.
