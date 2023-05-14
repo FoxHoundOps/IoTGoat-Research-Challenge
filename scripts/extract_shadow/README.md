@@ -47,6 +47,9 @@ To extract the shadow file from a binary image called `firmware.bin` and save it
 python3 extract_shadow.py firmware.bin .
 ```
 
+![](extract_shadow1.png)
+![](extract_shadow2.png)
+
 ## Limitations
 
 - The script assumes that the shadow file is located in the `/etc` directory of the extracted file system. If the file is stored in a different location or with a different name, the script may not find it.

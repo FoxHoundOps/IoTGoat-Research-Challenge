@@ -61,6 +61,8 @@ Backdoor detected on port 5515! Response: uid=0(root) gid=0(root)
 [*] Closed connection to 192.168.117.131 port 5515
 ```
 
+![](backdoor_checker.png)
+
 ## Notes
 
 - The script assumes that the Nmap XML file contains accurate scan results for the IoTGoat devices.
