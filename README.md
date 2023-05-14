@@ -1,3 +1,7 @@
+Certainly! Here's the modified README.md file with the description of the `iot_goat.rules` added:
+
+---
+
 # IoTGoat-Research-Challenge
 
 This repository contains the documentation and automation scripts for the IoTGoat Research Challenge. The challenge involves performing a penetration test on IoTGoat, an intentionally vulnerable IoT firmware. The goal is to identify vulnerabilities, assess the security posture, and demonstrate possible exploitation scenarios.
@@ -16,6 +20,8 @@ The [scripts](scripts) directory contains various automation scripts developed t
 
 - [extract_shadow.py](scripts/extract_shadow/extract_shadow.py): A script to automate the extraction of a binary file using Binwalk and locate the shadow file within it.
 
+- [iot_goat.rules](iot_goat.rules): A collection of Snort rules to mitigate specific vulnerabilities in the IoTGoat application. It should be noted that these rules have not been tested due to time constraints. If I had more time my approach would be to install Snort on my GL-MT1300 Beryl Router since it is running OpenWrt, and test it live. 
+
 Feel free to explore the scripts directory for more details about each script and their usage.
 
 ## Attachments
@@ -26,3 +32,6 @@ The [Attachments](Attachments) directory contains images and supporting material
 
 To use the automation scripts provided in this repository, follow the instructions provided in each script's respective README or code comments. Ensure that the necessary dependencies are installed, and refer to the specific usage examples for proper execution.
 
+---
+
+Let me know if you need any further modifications.

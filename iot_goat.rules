@@ -1,0 +1,8 @@
+# Disable Traffic on Port 80 from IoTGoat Host
+alert tcp 192.168.117.131 any -> any 80 (msg:"Disable Traffic on Port 80 from IoTGoat Host"; sid:1000001; flow:to_server; drop;)
+
+# Block SCP Commands over Port 22
+alert tcp any any -> any 22 (msg:"Block SCP Commands"; sid:1000002; content:"scp"; nocase; detection_filter:track by_src, count 1, seconds 60; drop;)
+
+# Close Off Backdoor on Port 5515
+alert tcp any any -> any 5515 (msg:"Close Off Backdoor on Port 5515"; sid:1000003; flow:established,to_server; content:"[***]Successfully Connected to IoTGoat's Backdoor[***]"; detection_filter:track by_src, count 1, seconds 60; drop;)
