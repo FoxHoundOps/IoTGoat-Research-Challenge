@@ -12,9 +12,9 @@ The [scripts](scripts) directory contains various automation scripts developed t
 
 ### Contents
 
-- [backdoor_checker.py](scripts/backdoor_checker.py): A script to automate backdoor detection by scanning network hosts for potential backdoor services.
+- [backdoor_checker.py](scripts/backdoor_checker/backdoor_checker.py): A script to automate backdoor detection by scanning network hosts for potential backdoor services.
 
-- [extract_shadow.py](scripts/extract_shadow.py): A script to automate the extraction of a binary file using Binwalk and locate the shadow file within it.
+- [extract_shadow.py](scripts/extract_shadow/extract_shadow.py): A script to automate the extraction of a binary file using Binwalk and locate the shadow file within it.
 
 Feel free to explore the scripts directory for more details about each script and their usage.
 
